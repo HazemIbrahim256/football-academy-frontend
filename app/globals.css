@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global main styling: make all pages use green background and full viewport height */
+@layer base {
+  main {
+    /* Use a clean light base to let brand accents pop */
+    @apply min-h-screen bg-white;
+  }
+  /* Make input and select text black globally */
+  input, textarea {
+    @apply text-black caret-black;
+  }
+  select {
+    @apply text-black;
+  }
+  /* Ensure links are visible on light backgrounds */
+  a {
+    /* Use raw colors to avoid @apply issues with custom palette */
+    color: #3A1D1D; /* brand maroon */
+    text-decoration: none; /* remove global underline */
+  }
+  a:hover {
+    color: #8F1E1E; /* brand red */
+    text-decoration: none;
+  }
+  /* Make all buttons use brand red with attractive hover */
+  button {
+    @apply text-white rounded shadow-sm transition-colors;
+    background-color: #8F1E1E !important; /* brand red */
+    border-color: #3A1D1D !important; /* maroon shadow for outline */
+  }
+  button:hover {
+    background-color: #3A1D1D !important; /* maroon shadow on hover */
+  }
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+/* Reusable components for a more polished UI */
+@layer components {
+  .card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm p-4;
+  }
+  .section-title {
+    @apply text-lg font-semibold text-gray-800;
+  }
+  .input {
+    @apply bg-white text-black border border-gray-300 rounded px-3 py-2 focus:outline-none;
+  }
+  .select {
+    @apply bg-white text-black border border-gray-300 rounded px-3 py-2 focus:outline-none;
+  }
+  .textarea {
+    @apply bg-white text-black border border-gray-300 rounded px-3 py-2 focus:outline-none;
+  }
+  .fancy-table {
+    @apply w-full border text-sm;
+  }
+  .fancy-table thead {
+    @apply bg-gray-50;
+  }
+  .fancy-table th {
+    @apply border px-2 py-1 text-left text-gray-700;
+  }
+  .fancy-table td {
+    @apply border px-2 py-1;
+  }
+}
+
+/* Zebra striping for tables */
+.fancy-table tbody tr:nth-child(even) { background-color: #f9fafb; }
+.fancy-table tbody tr:hover { background-color: #f3f4f6; }
+
+:root {
+  --bg: #ffffff;
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+}
