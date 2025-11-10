@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-// using plain <img> to avoid Next image import issues with this file
+import { API_URL } from "@/lib/api";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("coach1");
@@ -13,7 +13,7 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/auth/token/`, {
+      const res = await fetch(`${API_URL}/api/auth/token/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
