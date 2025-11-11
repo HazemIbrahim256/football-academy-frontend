@@ -5,6 +5,7 @@ import Link from "next/link";
 
 type Evaluation = {
   id: number;
+  evaluated_at?: string;
   // Technical Skills
   ball_control: number | null;
   passing: number | null;
@@ -48,6 +49,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
   const playerId = Number(params.id);
   const [player, setPlayer] = useState<Player | null>(null);
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<string>(new Date().toISOString().slice(0, 7));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -117,7 +119,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
       try {
         const p = await api<Player>(`/api/players/${playerId}/`);
         setPlayer(p);
-        const evs = await api<Evaluation[]>(`/api/evaluations/?player=${playerId}`);
+        const evs = await api<Evaluation[]>(`/api/evaluations/?player=${playerId}&month=${selectedMonth}`);
         setEvaluation(evs[0] || null);
       } catch (e: any) {
         setError(e.message);
@@ -125,7 +127,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         setLoading(false);
       }
     })();
-  }, [playerId]);
+  }, [playerId, selectedMonth]);
 
   const downloadPlayerPdf = async () => {
     try {
@@ -209,6 +211,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
       setSavingCreateEval(true);
       const payload = {
         player: playerId,
+        evaluated_at: `${selectedMonth}-01`,
         // Technical Skills
         ball_control: Math.min(5, Math.max(1, Number(createForm.ball_control))),
         passing: Math.min(5, Math.max(1, Number(createForm.passing))),
@@ -366,7 +369,18 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         {player.feet ? ` • Feet: ${({ L: "Left", R: "Right", B: "Both" } as const)[player.feet]}` : ""}
       </p>
       <section className="mt-4">
-        <h2 className="font-medium mb-2">Evaluation</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="font-medium">Evaluation</h2>
+          <label className="text-sm inline-flex items-center gap-2">
+            <span>Month:</span>
+            <input
+              type="month"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="rounded border px-2 py-1 text-sm"
+            />
+          </label>
+        </div>
         {evaluation ? (
           <ul className="grid grid-cols-2 gap-2 text-sm mb-3">
             {/* Technical Skills */}
