@@ -845,9 +845,12 @@ function RatingButtons({
         <button
           key={n}
           type="button"
-          className={`px-2 py-1 rounded text-sm ${
-            n === current ? "bg-brand-red hover:bg-brand-maroon text-white" : "border"
+          className={`px-2 py-1 rounded text-sm transition-colors ${
+            n === current
+              ? "bg-brand-red hover:bg-brand-maroon text-white border border-brand-red"
+              : "border border-gray-300 bg-white text-gray-800 hover:border-gray-400"
           }`}
+          aria-pressed={n === current}
           onClick={() => onChange(n)}
         >
           {n}
