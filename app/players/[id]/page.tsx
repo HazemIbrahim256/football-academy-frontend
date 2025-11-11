@@ -384,7 +384,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         {evaluation ? (
           <ul className="grid grid-cols-2 gap-2 text-sm mb-3">
             {/* Technical Skills */}
-            <li className="col-span-2 font-medium mt-2">Technical Skills</li>
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Skills</li>
             <li>
               {editingSkills ? (
                 <label className="text-sm inline-flex items-center gap-2">
@@ -452,7 +452,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
 
             {/* Physical Abilities */}
-            <li className="col-span-2 font-medium mt-2">Physical Abilities</li>
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Physical Abilities</li>
             <li>
               {editingSkills ? (
                 <label className="text-sm inline-flex items-center gap-2">
@@ -507,7 +507,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
 
             {/* Technical Understanding */}
-            <li className="col-span-2 font-medium mt-2">Technical Understanding</li>
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Understanding</li>
             <li>
               {editingSkills ? (
                 <label className="text-sm inline-flex items-center gap-2">
@@ -562,7 +562,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
 
             {/* Psychological and Social */}
-            <li className="col-span-2 font-medium mt-2">Psychological and Social</li>
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Psychological and Social</li>
             <li>
               {editingSkills ? (
                 <label className="text-sm inline-flex items-center gap-2">
