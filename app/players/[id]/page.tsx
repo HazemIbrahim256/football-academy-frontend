@@ -714,7 +714,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               <div className="space-y-2">
                 {/* Create evaluation form: categories */}
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="col-span-2 font-medium mt-2">Technical Skills</div>
+                  <SectionHeader title="Technical Skills" />
                   {(
                     [
                       ["ball_control", "Ball control"],
@@ -732,7 +732,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </label>
                   ))}
-                  <div className="col-span-2 font-medium mt-2">Physical Abilities</div>
+                  <SectionHeader title="Physical Abilities" />
                   {(
                     [
                       ["speed", "Speed"],
@@ -749,7 +749,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </label>
                   ))}
-                  <div className="col-span-2 font-medium mt-2">Technical Understanding</div>
+                  <SectionHeader title="Technical Understanding" />
                   {(
                     [
                       ["positioning", "Positioning"],
@@ -766,7 +766,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </label>
                   ))}
-                  <div className="col-span-2 font-medium mt-2">Psychological and Social</div>
+                  <SectionHeader title="Psychological and Social" />
                   {(
                     [
                       ["respect", "Respect"],
@@ -856,6 +856,18 @@ function RatingButtons({
           {n}
         </button>
       ))}
+    </div>
+  );
+}
+
+function SectionHeader({ title, className }: { title: string; className?: string }) {
+  return (
+    <div
+      className={`col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300 ${
+        className ?? ""
+      }`}
+    >
+      {title}
     </div>
   );
 }
