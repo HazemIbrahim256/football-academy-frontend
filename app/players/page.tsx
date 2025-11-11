@@ -19,6 +19,9 @@ type Player = {
   age: number;
   birth_date?: string | null;
   phone?: string | null;
+  tall?: number | null;
+  weight?: number | null;
+  feet?: "L" | "R" | "B" | null;
   group: number;
 };
 
@@ -31,12 +34,18 @@ export default function PlayersPage() {
   const [birthDate, setBirthDate] = useState<string>("");
   const [phone, setPhone] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [tall, setTall] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
+  const [feet, setFeet] = useState<"" | "L" | "R" | "B">("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editName, setEditName] = useState("");
   const [editBirthDate, setEditBirthDate] = useState<string>("");
   const [editPhone, setEditPhone] = useState("");
   const [editGroupId, setEditGroupId] = useState<number | null>(null);
   const [editPhotoFile, setEditPhotoFile] = useState<File | null>(null);
+  const [editTall, setEditTall] = useState<string>("");
+  const [editWeight, setEditWeight] = useState<string>("");
+  const [editFeet, setEditFeet] = useState<"" | "L" | "R" | "B">("");
   const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
   const [editPhotoPreviewUrl, setEditPhotoPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -129,11 +138,17 @@ export default function PlayersPage() {
       form.append("birth_date", birthDate);
       form.append("phone", phone);
       form.append("group", String(selectedGroupId));
+      if (tall.trim()) form.append("tall", String(Math.max(0, Number(tall.trim()))));
+      if (weight.trim()) form.append("weight", String(Math.max(0, Number(weight.trim()))));
+      if (feet) form.append("feet", feet);
       if (photoFile) form.append("photo", photoFile, makeSafeFilename(photoFile));
       await api<Player>("/api/players/", { method: "POST", body: form });
       setName("");
       setBirthDate("");
       setPhone("");
+      setTall("");
+      setWeight("");
+      setFeet("");
       setPhotoFile(null);
       const ps = await api<Player[]>(`/api/players/?group=${selectedGroupId}`);
       setPlayers(ps);
@@ -162,6 +177,9 @@ export default function PlayersPage() {
     setEditPhone(p.phone ?? "");
     setEditGroupId(p.group);
     setEditPhotoFile(null);
+    setEditTall(p.tall != null ? String(p.tall) : "");
+    setEditWeight(p.weight != null ? String(p.weight) : "");
+    setEditFeet((p.feet as any) ?? "");
   };
 
   const cancelEdit = () => {
@@ -171,6 +189,9 @@ export default function PlayersPage() {
     setEditPhone("");
     setEditGroupId(null);
     setEditPhotoFile(null);
+    setEditTall("");
+    setEditWeight("");
+    setEditFeet("");
   };
 
   const saveEdit = async () => {
@@ -185,6 +206,9 @@ export default function PlayersPage() {
       form.append("birth_date", editBirthDate);
       form.append("phone", editPhone);
       form.append("group", String(editGroupId));
+      if (editTall.trim()) form.append("tall", String(Math.max(0, Number(editTall.trim()))));
+      if (editWeight.trim()) form.append("weight", String(Math.max(0, Number(editWeight.trim()))));
+      if (editFeet) form.append("feet", editFeet);
       if (editPhotoFile) form.append("photo", editPhotoFile, makeSafeFilename(editPhotoFile));
       await api(`/api/players/${editingId}/`, { method: "PATCH", body: form });
       cancelEdit();
@@ -241,6 +265,32 @@ export default function PlayersPage() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
+            <input
+              className="border px-2 py-1 rounded"
+              type="number"
+              min={0}
+              placeholder="Tall (cm)"
+              value={tall}
+              onChange={(e) => setTall(e.target.value)}
+            />
+            <input
+              className="border px-2 py-1 rounded"
+              type="number"
+              min={0}
+              placeholder="Weight (kg)"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+            />
+            <select
+              className="border px-2 py-1 rounded"
+              value={feet}
+              onChange={(e) => setFeet(e.target.value as any)}
+            >
+              <option value="">Feet (L/R/B)</option>
+              <option value="L">L</option>
+              <option value="R">R</option>
+              <option value="B">B</option>
+            </select>
             {photoPreviewUrl && (
               <div className="sm:col-span-4">
                 <p className="text-xs text-gray-500">Selected photo preview</p>
@@ -295,6 +345,32 @@ export default function PlayersPage() {
                         value={editPhone}
                         onChange={(e) => setEditPhone(e.target.value)}
                       />
+                      <input
+                        className="border px-2 py-1 rounded"
+                        type="number"
+                        min={0}
+                        placeholder="Tall (cm)"
+                        value={editTall}
+                        onChange={(e) => setEditTall(e.target.value)}
+                      />
+                      <input
+                        className="border px-2 py-1 rounded"
+                        type="number"
+                        min={0}
+                        placeholder="Weight (kg)"
+                        value={editWeight}
+                        onChange={(e) => setEditWeight(e.target.value)}
+                      />
+                      <select
+                        className="border px-2 py-1 rounded"
+                        value={editFeet}
+                        onChange={(e) => setEditFeet(e.target.value as any)}
+                      >
+                        <option value="">Feet (L/R/B)</option>
+                        <option value="L">L</option>
+                        <option value="R">R</option>
+                        <option value="B">B</option>
+                      </select>
                     <select
                       className="border px-2 py-1 rounded"
                       value={editGroupId ?? ""}
