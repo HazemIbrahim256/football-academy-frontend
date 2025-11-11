@@ -39,6 +39,9 @@ type Player = {
   phone?: string | null;
   group: number;
   photo: string | null;
+  tall?: number | null;
+  weight?: number | null;
+  feet?: "L" | "R" | "B" | null;
 };
 
 export default function PlayerPage({ params }: { params: { id: string } }) {
@@ -355,7 +358,13 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
           Download Player PDF
         </button>
       </div>
-      <p className="text-gray-700 mb-2">Age: {player.age}{player.phone ? ` • Phone: ${player.phone}` : ""}</p>
+      <p className="text-gray-700 mb-2">
+        Age: {player.age}
+        {player.phone ? ` • Phone: ${player.phone}` : ""}
+        {typeof player.tall === "number" ? ` • Tall: ${player.tall} cm` : ""}
+        {typeof player.weight === "number" ? ` • Weight: ${player.weight} kg` : ""}
+        {player.feet ? ` • Feet: ${({ L: "Left", R: "Right", B: "Both" } as const)[player.feet]}` : ""}
+      </p>
       <section className="mt-4">
         <h2 className="font-medium mb-2">Evaluation</h2>
         {evaluation ? (
@@ -364,17 +373,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2">Technical Skills</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Ball control:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Ball control:</span>
+                  <RatingButtons
                     value={skillsForm.ball_control}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, ball_control: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, ball_control: n }))}
+                  />
                 </label>
               ) : (
                 <>Ball control: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
@@ -382,17 +386,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Passing:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Passing:</span>
+                  <RatingButtons
                     value={skillsForm.passing}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, passing: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, passing: n }))}
+                  />
                 </label>
               ) : (
                 <>Passing: {evaluation.passing}{evaluation.passing != null ? ` (${ratingLabel(evaluation.passing)})` : ""}</>
@@ -400,17 +399,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Dribbling:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Dribbling:</span>
+                  <RatingButtons
                     value={skillsForm.dribbling}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, dribbling: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, dribbling: n }))}
+                  />
                 </label>
               ) : (
                 <>Dribbling: {evaluation.dribbling}{evaluation.dribbling != null ? ` (${ratingLabel(evaluation.dribbling)})` : ""}</>
@@ -418,17 +412,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Shooting:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Shooting:</span>
+                  <RatingButtons
                     value={skillsForm.shooting}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, shooting: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, shooting: n }))}
+                  />
                 </label>
               ) : (
                 <>Shooting: {evaluation.shooting}{evaluation.shooting != null ? ` (${ratingLabel(evaluation.shooting)})` : ""}</>
@@ -436,17 +425,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Using both feet:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Using both feet:</span>
+                  <RatingButtons
                     value={skillsForm.using_both_feet}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, using_both_feet: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, using_both_feet: n }))}
+                  />
                 </label>
               ) : (
                 <>Using both feet: {evaluation.using_both_feet}{evaluation.using_both_feet != null ? ` (${ratingLabel(evaluation.using_both_feet)})` : ""}</>
@@ -457,17 +441,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2">Physical Abilities</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Speed:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Speed:</span>
+                  <RatingButtons
                     value={skillsForm.speed}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, speed: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, speed: n }))}
+                  />
                 </label>
               ) : (
                 <>Speed: {evaluation.speed}{evaluation.speed != null ? ` (${ratingLabel(evaluation.speed)})` : ""}</>
@@ -475,17 +454,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Agility:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Agility:</span>
+                  <RatingButtons
                     value={skillsForm.agility}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, agility: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, agility: n }))}
+                  />
                 </label>
               ) : (
                 <>Agility: {evaluation.agility}{evaluation.agility != null ? ` (${ratingLabel(evaluation.agility)})` : ""}</>
@@ -493,17 +467,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Endurance:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Endurance:</span>
+                  <RatingButtons
                     value={skillsForm.endurance}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, endurance: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, endurance: n }))}
+                  />
                 </label>
               ) : (
                 <>Endurance: {evaluation.endurance}{evaluation.endurance != null ? ` (${ratingLabel(evaluation.endurance)})` : ""}</>
@@ -511,17 +480,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Strength:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Strength:</span>
+                  <RatingButtons
                     value={skillsForm.strength}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, strength: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, strength: n }))}
+                  />
                 </label>
               ) : (
                 <>Strength: {evaluation.strength}{evaluation.strength != null ? ` (${ratingLabel(evaluation.strength)})` : ""}</>
@@ -532,17 +496,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2">Technical Understanding</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Positioning:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Positioning:</span>
+                  <RatingButtons
                     value={skillsForm.positioning}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, positioning: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, positioning: n }))}
+                  />
                 </label>
               ) : (
                 <>Positioning: {evaluation.positioning}{evaluation.positioning != null ? ` (${ratingLabel(evaluation.positioning)})` : ""}</>
@@ -550,17 +509,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Decision making:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Decision making:</span>
+                  <RatingButtons
                     value={skillsForm.decision_making}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, decision_making: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, decision_making: n }))}
+                  />
                 </label>
               ) : (
                 <>Decision making: {evaluation.decision_making}{evaluation.decision_making != null ? ` (${ratingLabel(evaluation.decision_making)})` : ""}</>
@@ -568,17 +522,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Game awareness:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Game awareness:</span>
+                  <RatingButtons
                     value={skillsForm.game_awareness}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, game_awareness: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, game_awareness: n }))}
+                  />
                 </label>
               ) : (
                 <>Game awareness: {evaluation.game_awareness}{evaluation.game_awareness != null ? ` (${ratingLabel(evaluation.game_awareness)})` : ""}</>
@@ -586,17 +535,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Teamwork:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Teamwork:</span>
+                  <RatingButtons
                     value={skillsForm.teamwork}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, teamwork: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, teamwork: n }))}
+                  />
                 </label>
               ) : (
                 <>Teamwork: {evaluation.teamwork}{evaluation.teamwork != null ? ` (${ratingLabel(evaluation.teamwork)})` : ""}</>
@@ -607,17 +551,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2">Psychological and Social</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Respect:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Respect:</span>
+                  <RatingButtons
                     value={skillsForm.respect}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, respect: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, respect: n }))}
+                  />
                 </label>
               ) : (
                 <>Respect: {evaluation.respect}{evaluation.respect != null ? ` (${ratingLabel(evaluation.respect)})` : ""}</>
@@ -625,17 +564,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Sportsmanship:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Sportsmanship:</span>
+                  <RatingButtons
                     value={skillsForm.sportsmanship}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, sportsmanship: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, sportsmanship: n }))}
+                  />
                 </label>
               ) : (
                 <>Sportsmanship: {evaluation.sportsmanship}{evaluation.sportsmanship != null ? ` (${ratingLabel(evaluation.sportsmanship)})` : ""}</>
@@ -643,17 +577,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Confidence:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Confidence:</span>
+                  <RatingButtons
                     value={skillsForm.confidence}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, confidence: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, confidence: n }))}
+                  />
                 </label>
               ) : (
                 <>Confidence: {evaluation.confidence}{evaluation.confidence != null ? ` (${ratingLabel(evaluation.confidence)})` : ""}</>
@@ -661,17 +590,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Leadership:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Leadership:</span>
+                  <RatingButtons
                     value={skillsForm.leadership}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, leadership: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, leadership: n }))}
+                  />
                 </label>
               ) : (
                 <>Leadership: {evaluation.leadership}{evaluation.leadership != null ? ` (${ratingLabel(evaluation.leadership)})` : ""}</>
@@ -718,17 +642,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li className="col-span-2">
               {editingSkills ? (
-                <label className="text-sm">
-                  <span className="mr-2">Attendance and punctuality:</span>
-                  <select
-                    className="border px-2 py-1 rounded w-36"
+                <label className="text-sm inline-flex items-center gap-2">
+                  <span>Attendance and punctuality:</span>
+                  <RatingButtons
                     value={skillsForm.attendance_and_punctuality}
-                    onChange={(e) => setSkillsForm((prev) => ({ ...prev, attendance_and_punctuality: Number(e.target.value) }))}
-                  >
-                    {RATING_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
+                  />
                 </label>
               ) : (
                 <>Attendance and punctuality: {evaluation.attendance_and_punctuality}{evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}</>
@@ -805,17 +724,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["using_both_feet", "Using both feet"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm">
-                      <span className="mr-2">{label}:</span>
-                      <select
-                        className="border px-2 py-1 rounded w-36"
+                    <label key={key} className="text-sm inline-flex items-center gap-2">
+                      <span>{label}:</span>
+                      <RatingButtons
                         value={(createForm as any)[key]}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, [key]: Number(e.target.value) }))}
-                      >
-                        {RATING_OPTIONS.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
+                        onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                      />
                     </label>
                   ))}
                   <div className="col-span-2 font-medium mt-2">Physical Abilities</div>
@@ -827,17 +741,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["strength", "Strength"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm">
-                      <span className="mr-2">{label}:</span>
-                      <select
-                        className="border px-2 py-1 rounded w-36"
+                    <label key={key} className="text-sm inline-flex items-center gap-2">
+                      <span>{label}:</span>
+                      <RatingButtons
                         value={(createForm as any)[key]}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, [key]: Number(e.target.value) }))}
-                      >
-                        {RATING_OPTIONS.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
+                        onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                      />
                     </label>
                   ))}
                   <div className="col-span-2 font-medium mt-2">Technical Understanding</div>
@@ -849,17 +758,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["teamwork", "Teamwork"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm">
-                      <span className="mr-2">{label}:</span>
-                      <select
-                        className="border px-2 py-1 rounded w-36"
+                    <label key={key} className="text-sm inline-flex items-center gap-2">
+                      <span>{label}:</span>
+                      <RatingButtons
                         value={(createForm as any)[key]}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, [key]: Number(e.target.value) }))}
-                      >
-                        {RATING_OPTIONS.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
+                        onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                      />
                     </label>
                   ))}
                   <div className="col-span-2 font-medium mt-2">Psychological and Social</div>
@@ -871,31 +775,21 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["leadership", "Leadership"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm">
-                      <span className="mr-2">{label}:</span>
-                      <select
-                        className="border px-2 py-1 rounded w-36"
+                    <label key={key} className="text-sm inline-flex items-center gap-2">
+                      <span>{label}:</span>
+                      <RatingButtons
                         value={(createForm as any)[key]}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, [key]: Number(e.target.value) }))}
-                      >
-                        {RATING_OPTIONS.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
+                        onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                      />
                     </label>
                   ))}
                   <div className="col-span-2">
-                    <label className="text-sm">
-                      <span className="mr-2">Attendance and punctuality:</span>
-                      <select
-                        className="border px-2 py-1 rounded w-36"
+                    <label className="text-sm inline-flex items-center gap-2">
+                      <span>Attendance and punctuality:</span>
+                      <RatingButtons
                         value={createForm.attendance_and_punctuality}
-                        onChange={(e) => setCreateForm((prev) => ({ ...prev, attendance_and_punctuality: Number(e.target.value) }))}
-                      >
-                        {RATING_OPTIONS.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                      </select>
+                        onChange={(n) => setCreateForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
+                      />
                     </label>
                   </div>
                 </div>
@@ -930,6 +824,36 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         <Link className="underline" href={`/groups/${player.group}`}>Back to Group</Link>
       </div>
     </main>
+  );
+}
+
+// Button group for selecting a 1–5 rating
+function RatingButtons({
+  value,
+  onChange,
+  className,
+}: {
+  value: number | null;
+  onChange: (n: number) => void;
+  className?: string;
+}) {
+  const options = [1, 2, 3, 4, 5];
+  const current = typeof value === "number" ? value : 0;
+  return (
+    <div className={`inline-flex gap-1 ${className ?? ""}`}>
+      {options.map((n) => (
+        <button
+          key={n}
+          type="button"
+          className={`px-2 py-1 rounded text-sm ${
+            n === current ? "bg-brand-red hover:bg-brand-maroon text-white" : "border"
+          }`}
+          onClick={() => onChange(n)}
+        >
+          {n}
+        </button>
+      ))}
+    </div>
   );
 }
 
