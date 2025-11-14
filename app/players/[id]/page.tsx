@@ -758,53 +758,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                 </>
               )}
             </li>
-            <li className="col-span-2">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <span className="font-medium">Notes:</span>
-                  {editingNotes ? (
-                    <textarea
-                      className="mt-1 border px-2 py-1 rounded w-full text-sm"
-                      placeholder="Notes (optional)"
-                      value={notesInput}
-                      onChange={(e) => setNotesInput(e.target.value)}
-                    />
-                  ) : (
-                    <span className="ml-1 text-sm">{evaluation.notes || "—"}</span>
-                  )}
-                </div>
-                <div className="shrink-0 flex gap-2">
-                  {editingNotes ? (
-                    <>
-                      <button
-                        type="button"
-                        className="rounded bg-brand-red hover:bg-brand-maroon text-white px-3 py-1 text-sm"
-                        onClick={saveNotes}
-                        disabled={savingNotes}
-                      >
-                        {savingNotes ? "Saving…" : "Save"}
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded border px-3 py-1 text-sm"
-                        onClick={cancelEditNotes}
-                        disabled={savingNotes}
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      type="button"
-                      className="rounded border px-3 py-1 text-sm"
-                      onClick={startEditNotes}
-                    >
-                      {evaluation.notes ? "Edit Notes" : "Add Notes"}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </li>
+            {/* Notes section removed per user request */}
           </ul>
         ) : (
           <div className="mb-3">
