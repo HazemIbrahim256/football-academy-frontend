@@ -52,6 +52,9 @@ export default function AttendancePage() {
     })();
   }, [month]);
 
+  // Broadcast channel to notify other pages (e.g., player profile) of updates
+  const [bc] = useState<BroadcastChannel | null>(typeof window !== "undefined" ? new BroadcastChannel("attendance-updates") : null);
+
   const updateAttendance = async (playerId: number, days: number) => {
     setSaving(playerId);
     try {
@@ -66,6 +69,8 @@ export default function AttendancePage() {
           players: g.players.map((p) => (p.id === playerId ? { ...p, attendance_days: days } : p)),
         }))
       );
+      // Notify other tabs/pages so player page can auto-update
+      bc?.postMessage({ playerId, month, days });
     } catch (e: any) {
       alert(e.message);
     } finally {
@@ -86,7 +91,7 @@ export default function AttendancePage() {
   return (
     <main className="max-w-5xl mx-auto p-6">
       <h1 className="text-xl font-semibold mb-4">Attendance</h1>
-      <p className="text-sm text-gray-600 mb-4">Enter the number of days attended for each player.</p>
+      <p className="text-sm text-gray-600 mb-4">Enter classes attended this month (out of 8).</p>
       <div className="flex items-center space-x-3 mb-6">
         <label htmlFor="month" className="text-sm">Month:</label>
         <input
@@ -105,7 +110,7 @@ export default function AttendancePage() {
             <thead>
               <tr>
                 <th>Player</th>
-                <th className="w-48">Days Attended</th>
+                <th className="w-64">Classes Attended (0–8)</th>
               </tr>
             </thead>
             <tbody>
@@ -117,11 +122,11 @@ export default function AttendancePage() {
                       <input
                         type="number"
                         min={0}
-                        max={365}
+                        max={8}
                         className="input w-24"
                         value={p.attendance_days ?? 0}
                         onChange={(e) => {
-                          const val = Math.max(0, Math.min(365, Number(e.target.value)));
+                          const val = Math.max(0, Math.min(8, Number(e.target.value)));
                           // Optimistic UI update
                           setGroups((prev) =>
                             prev.map((g) => ({
@@ -130,8 +135,9 @@ export default function AttendancePage() {
                             }))
                           );
                         }}
-                        onBlur={(e) => updateAttendance(p.id, Number(e.target.value))}
+                        onBlur={(e) => updateAttendance(p.id, Math.max(0, Math.min(8, Number(e.target.value))))}
                       />
+                      <span className="text-xs text-gray-600">{(p.attendance_days ?? 0)}/8 ({Math.round(((p.attendance_days ?? 0) / 8) * 100)}%)</span>
                       <button
                         disabled={saving === p.id}
                         className="text-xs px-2 py-1 disabled:opacity-60"

@@ -43,6 +43,7 @@ type Player = {
   tall?: number | null;
   weight?: number | null;
   feet?: "L" | "R" | "B" | null;
+  attendance_days?: number | null;
 };
 
 export default function PlayerPage({ params }: { params: { id: string } }) {
@@ -166,7 +167,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     (async () => {
       try {
-        const p = await api<Player>(`/api/players/${playerId}/`);
+        const p = await api<Player>(`/api/players/${playerId}/?month=${selectedMonth}`);
         setPlayer(p);
         const evs = await api<Evaluation[]>(`/api/evaluations/?player=${playerId}&month=${selectedMonth}`);
         setEvaluation(evs[0] || null);
@@ -178,9 +179,23 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     })();
   }, [playerId, selectedMonth]);
 
+  // Listen for attendance updates from other pages and refresh the local summary when they match
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const bc = new BroadcastChannel("attendance-updates");
+    bc.onmessage = (evt) => {
+      const data = evt.data as { playerId: number; month: string; days: number };
+      if (!data) return;
+      if (data.playerId === playerId && data.month === selectedMonth) {
+        setPlayer((prev) => (prev ? { ...prev, attendance_days: data.days } : prev));
+      }
+    };
+    return () => bc.close();
+  }, [playerId, selectedMonth]);
+
   const downloadPlayerPdf = async () => {
     try {
-      const blob = await api<Blob>(`/api/players/${playerId}/report-pdf/`);
+      const blob = await api<Blob>(`/api/players/${playerId}/report-pdf/?month=${selectedMonth}`);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -733,7 +748,14 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Attendance and punctuality: {evaluation.attendance_and_punctuality}{evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}</>
+                <>
+                  Attendance and punctuality: {evaluation.attendance_and_punctuality}
+                  {evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}
+                  {" "}
+                  <span className="ml-2 text-xs text-gray-600">
+                    Monthly attendance: {(player?.attendance_days ?? 0)}/8 ({Math.round((((player?.attendance_days ?? 0) / 8) * 100))}%)
+                  </span>
+                </>
               )}
             </li>
             <li className="col-span-2">
