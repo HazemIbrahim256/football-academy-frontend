@@ -286,7 +286,7 @@ export default function PlayersPage() {
               value={feet}
               onChange={(e) => setFeet(e.target.value as any)}
             >
-              <option value="">Feet (L/R/B)</option>
+              <option value="">Foot (L/R/B)</option>
               <option value="L">L</option>
               <option value="R">R</option>
               <option value="B">B</option>
@@ -366,7 +366,7 @@ export default function PlayersPage() {
                         value={editFeet}
                         onChange={(e) => setEditFeet(e.target.value as any)}
                       >
-                        <option value="">Feet (L/R/B)</option>
+                        <option value="">Foot (L/R/B)</option>
                         <option value="L">L</option>
                         <option value="R">R</option>
                         <option value="B">B</option>

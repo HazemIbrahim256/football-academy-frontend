@@ -58,59 +58,108 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
   const [notesInput, setNotesInput] = useState("");
   const [savingNotes, setSavingNotes] = useState(false);
   const [editingSkills, setEditingSkills] = useState(false);
-  const [skillsForm, setSkillsForm] = useState({
+  const [skillsForm, setSkillsForm] = useState<{
     // Technical Skills
-    ball_control: 3,
-    passing: 3,
-    dribbling: 3,
-    shooting: 3,
-    using_both_feet: 3,
+    ball_control: number | null;
+    passing: number | null;
+    dribbling: number | null;
+    shooting: number | null;
+    using_both_feet: number | null;
     // Physical Abilities
-    speed: 3,
-    agility: 3,
-    endurance: 3,
-    strength: 3,
+    speed: number | null;
+    agility: number | null;
+    endurance: number | null;
+    strength: number | null;
     // Technical Understanding
-    positioning: 3,
-    decision_making: 3,
-    game_awareness: 3,
-    teamwork: 3,
+    positioning: number | null;
+    decision_making: number | null;
+    game_awareness: number | null;
+    teamwork: number | null;
     // Psychological and Social
-    respect: 3,
-    sportsmanship: 3,
-    confidence: 3,
-    leadership: 3,
+    respect: number | null;
+    sportsmanship: number | null;
+    confidence: number | null;
+    leadership: number | null;
     // Overall
-    attendance_and_punctuality: 3,
+    attendance_and_punctuality: number | null;
+  }>({
+    // Technical Skills
+    ball_control: null,
+    passing: null,
+    dribbling: null,
+    shooting: null,
+    using_both_feet: null,
+    // Physical Abilities
+    speed: null,
+    agility: null,
+    endurance: null,
+    strength: null,
+    // Technical Understanding
+    positioning: null,
+    decision_making: null,
+    game_awareness: null,
+    teamwork: null,
+    // Psychological and Social
+    respect: null,
+    sportsmanship: null,
+    confidence: null,
+    leadership: null,
+    // Overall
+    attendance_and_punctuality: null,
   });
   const [savingSkills, setSavingSkills] = useState(false);
   // Creation form state (for players with no evaluation yet)
   const [showCreateEvalForm, setShowCreateEvalForm] = useState(false);
   const [savingCreateEval, setSavingCreateEval] = useState(false);
-  const [createForm, setCreateForm] = useState({
+  const [createForm, setCreateForm] = useState<{
     // Technical Skills
-    ball_control: 3,
-    passing: 3,
-    dribbling: 3,
-    shooting: 3,
-    using_both_feet: 3,
+    ball_control: number | null;
+    passing: number | null;
+    dribbling: number | null;
+    shooting: number | null;
+    using_both_feet: number | null;
     // Physical Abilities
-    speed: 3,
-    agility: 3,
-    endurance: 3,
-    strength: 3,
+    speed: number | null;
+    agility: number | null;
+    endurance: number | null;
+    strength: number | null;
     // Technical Understanding
-    positioning: 3,
-    decision_making: 3,
-    game_awareness: 3,
-    teamwork: 3,
+    positioning: number | null;
+    decision_making: number | null;
+    game_awareness: number | null;
+    teamwork: number | null;
     // Psychological and Social
-    respect: 3,
-    sportsmanship: 3,
-    confidence: 3,
-    leadership: 3,
+    respect: number | null;
+    sportsmanship: number | null;
+    confidence: number | null;
+    leadership: number | null;
     // Overall
-    attendance_and_punctuality: 3,
+    attendance_and_punctuality: number | null;
+    notes: string;
+  }>({
+    // Technical Skills
+    ball_control: null,
+    passing: null,
+    dribbling: null,
+    shooting: null,
+    using_both_feet: null,
+    // Physical Abilities
+    speed: null,
+    agility: null,
+    endurance: null,
+    strength: null,
+    // Technical Understanding
+    positioning: null,
+    decision_making: null,
+    game_awareness: null,
+    teamwork: null,
+    // Psychological and Social
+    respect: null,
+    sportsmanship: null,
+    confidence: null,
+    leadership: null,
+    // Overall
+    attendance_and_punctuality: null,
     notes: "",
   });
 
@@ -209,32 +258,33 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
   const createEvaluation = async () => {
     try {
       setSavingCreateEval(true);
+      const clampOrNull = (v: any) => (typeof v === "number" ? Math.min(5, Math.max(1, v)) : null);
       const payload = {
         player: playerId,
         evaluated_at: `${selectedMonth}-01`,
         // Technical Skills
-        ball_control: Math.min(5, Math.max(1, Number(createForm.ball_control))),
-        passing: Math.min(5, Math.max(1, Number(createForm.passing))),
-        dribbling: Math.min(5, Math.max(1, Number(createForm.dribbling))),
-        shooting: Math.min(5, Math.max(1, Number(createForm.shooting))),
-        using_both_feet: Math.min(5, Math.max(1, Number(createForm.using_both_feet))),
+        ball_control: clampOrNull(createForm.ball_control),
+        passing: clampOrNull(createForm.passing),
+        dribbling: clampOrNull(createForm.dribbling),
+        shooting: clampOrNull(createForm.shooting),
+        using_both_feet: clampOrNull(createForm.using_both_feet),
         // Physical Abilities
-        speed: Math.min(5, Math.max(1, Number(createForm.speed))),
-        agility: Math.min(5, Math.max(1, Number(createForm.agility))),
-        endurance: Math.min(5, Math.max(1, Number(createForm.endurance))),
-        strength: Math.min(5, Math.max(1, Number(createForm.strength))),
+        speed: clampOrNull(createForm.speed),
+        agility: clampOrNull(createForm.agility),
+        endurance: clampOrNull(createForm.endurance),
+        strength: clampOrNull(createForm.strength),
         // Technical Understanding
-        positioning: Math.min(5, Math.max(1, Number(createForm.positioning))),
-        decision_making: Math.min(5, Math.max(1, Number(createForm.decision_making))),
-        game_awareness: Math.min(5, Math.max(1, Number(createForm.game_awareness))),
-        teamwork: Math.min(5, Math.max(1, Number(createForm.teamwork))),
+        positioning: clampOrNull(createForm.positioning),
+        decision_making: clampOrNull(createForm.decision_making),
+        game_awareness: clampOrNull(createForm.game_awareness),
+        teamwork: clampOrNull(createForm.teamwork),
         // Psychological and Social
-        respect: Math.min(5, Math.max(1, Number(createForm.respect))),
-        sportsmanship: Math.min(5, Math.max(1, Number(createForm.sportsmanship))),
-        confidence: Math.min(5, Math.max(1, Number(createForm.confidence))),
-        leadership: Math.min(5, Math.max(1, Number(createForm.leadership))),
+        respect: clampOrNull(createForm.respect),
+        sportsmanship: clampOrNull(createForm.sportsmanship),
+        confidence: clampOrNull(createForm.confidence),
+        leadership: clampOrNull(createForm.leadership),
         // Overall
-        attendance_and_punctuality: Math.min(5, Math.max(1, Number(createForm.attendance_and_punctuality))),
+        attendance_and_punctuality: clampOrNull(createForm.attendance_and_punctuality),
         notes: (createForm.notes || "").trim(),
       };
       const saved = await api<Evaluation>(`/api/evaluations/`, {
@@ -253,24 +303,24 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
   const startEditSkills = () => {
     if (!evaluation) return;
     setSkillsForm({
-      ball_control: evaluation.ball_control ?? 3,
-      passing: evaluation.passing ?? 3,
-      dribbling: evaluation.dribbling ?? 3,
-      shooting: evaluation.shooting ?? 3,
-      using_both_feet: evaluation.using_both_feet ?? 3,
-      speed: evaluation.speed ?? 3,
-      agility: evaluation.agility ?? 3,
-      endurance: evaluation.endurance ?? 3,
-      strength: evaluation.strength ?? 3,
-      positioning: evaluation.positioning ?? 3,
-      decision_making: evaluation.decision_making ?? 3,
-      game_awareness: evaluation.game_awareness ?? 3,
-      teamwork: evaluation.teamwork ?? 3,
-      respect: evaluation.respect ?? 3,
-      sportsmanship: evaluation.sportsmanship ?? 3,
-      confidence: evaluation.confidence ?? 3,
-      leadership: evaluation.leadership ?? 3,
-      attendance_and_punctuality: evaluation.attendance_and_punctuality ?? 3,
+      ball_control: evaluation.ball_control ?? null,
+      passing: evaluation.passing ?? null,
+      dribbling: evaluation.dribbling ?? null,
+      shooting: evaluation.shooting ?? null,
+      using_both_feet: evaluation.using_both_feet ?? null,
+      speed: evaluation.speed ?? null,
+      agility: evaluation.agility ?? null,
+      endurance: evaluation.endurance ?? null,
+      strength: evaluation.strength ?? null,
+      positioning: evaluation.positioning ?? null,
+      decision_making: evaluation.decision_making ?? null,
+      game_awareness: evaluation.game_awareness ?? null,
+      teamwork: evaluation.teamwork ?? null,
+      respect: evaluation.respect ?? null,
+      sportsmanship: evaluation.sportsmanship ?? null,
+      confidence: evaluation.confidence ?? null,
+      leadership: evaluation.leadership ?? null,
+      attendance_and_punctuality: evaluation.attendance_and_punctuality ?? null,
     });
     setEditingSkills(true);
   };
@@ -283,30 +333,31 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     if (!evaluation) return;
     try {
       setSavingSkills(true);
+      const clampOrNull = (v: any) => (typeof v === "number" ? Math.min(5, Math.max(1, v)) : null);
       const payload = {
         // Technical Skills
-        ball_control: Math.min(5, Math.max(1, Number(skillsForm.ball_control))),
-        passing: Math.min(5, Math.max(1, Number(skillsForm.passing))),
-        dribbling: Math.min(5, Math.max(1, Number(skillsForm.dribbling))),
-        shooting: Math.min(5, Math.max(1, Number(skillsForm.shooting))),
-        using_both_feet: Math.min(5, Math.max(1, Number(skillsForm.using_both_feet))),
+        ball_control: clampOrNull(skillsForm.ball_control),
+        passing: clampOrNull(skillsForm.passing),
+        dribbling: clampOrNull(skillsForm.dribbling),
+        shooting: clampOrNull(skillsForm.shooting),
+        using_both_feet: clampOrNull(skillsForm.using_both_feet),
         // Physical Abilities
-        speed: Math.min(5, Math.max(1, Number(skillsForm.speed))),
-        agility: Math.min(5, Math.max(1, Number(skillsForm.agility))),
-        endurance: Math.min(5, Math.max(1, Number(skillsForm.endurance))),
-        strength: Math.min(5, Math.max(1, Number(skillsForm.strength))),
+        speed: clampOrNull(skillsForm.speed),
+        agility: clampOrNull(skillsForm.agility),
+        endurance: clampOrNull(skillsForm.endurance),
+        strength: clampOrNull(skillsForm.strength),
         // Technical Understanding
-        positioning: Math.min(5, Math.max(1, Number(skillsForm.positioning))),
-        decision_making: Math.min(5, Math.max(1, Number(skillsForm.decision_making))),
-        game_awareness: Math.min(5, Math.max(1, Number(skillsForm.game_awareness))),
-        teamwork: Math.min(5, Math.max(1, Number(skillsForm.teamwork))),
+        positioning: clampOrNull(skillsForm.positioning),
+        decision_making: clampOrNull(skillsForm.decision_making),
+        game_awareness: clampOrNull(skillsForm.game_awareness),
+        teamwork: clampOrNull(skillsForm.teamwork),
         // Psychological and Social
-        respect: Math.min(5, Math.max(1, Number(skillsForm.respect))),
-        sportsmanship: Math.min(5, Math.max(1, Number(skillsForm.sportsmanship))),
-        confidence: Math.min(5, Math.max(1, Number(skillsForm.confidence))),
-        leadership: Math.min(5, Math.max(1, Number(skillsForm.leadership))),
+        respect: clampOrNull(skillsForm.respect),
+        sportsmanship: clampOrNull(skillsForm.sportsmanship),
+        confidence: clampOrNull(skillsForm.confidence),
+        leadership: clampOrNull(skillsForm.leadership),
         // Overall
-        attendance_and_punctuality: Math.min(5, Math.max(1, Number(skillsForm.attendance_and_punctuality))),
+        attendance_and_punctuality: clampOrNull(skillsForm.attendance_and_punctuality),
         // Notes preserved as-is
         notes: (evaluation.notes || "").trim(),
       };
@@ -387,65 +438,70 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Skills</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Ball control:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Ball control:</span>
                   <RatingButtons
                     value={skillsForm.ball_control}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, ball_control: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Ball control: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Passing:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Passing:</span>
                   <RatingButtons
                     value={skillsForm.passing}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, passing: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Passing: {evaluation.passing}{evaluation.passing != null ? ` (${ratingLabel(evaluation.passing)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Dribbling:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Dribbling:</span>
                   <RatingButtons
                     value={skillsForm.dribbling}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, dribbling: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Dribbling: {evaluation.dribbling}{evaluation.dribbling != null ? ` (${ratingLabel(evaluation.dribbling)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Shooting:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Shooting:</span>
                   <RatingButtons
                     value={skillsForm.shooting}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, shooting: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Shooting: {evaluation.shooting}{evaluation.shooting != null ? ` (${ratingLabel(evaluation.shooting)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Using both feet:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Using both feet:</span>
                   <RatingButtons
                     value={skillsForm.using_both_feet}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, using_both_feet: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Using both feet: {evaluation.using_both_feet}{evaluation.using_both_feet != null ? ` (${ratingLabel(evaluation.using_both_feet)})` : ""}</>
               )}
@@ -455,52 +511,56 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Physical Abilities</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Speed:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Speed:</span>
                   <RatingButtons
                     value={skillsForm.speed}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, speed: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Speed: {evaluation.speed}{evaluation.speed != null ? ` (${ratingLabel(evaluation.speed)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Agility:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Agility:</span>
                   <RatingButtons
                     value={skillsForm.agility}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, agility: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Agility: {evaluation.agility}{evaluation.agility != null ? ` (${ratingLabel(evaluation.agility)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Endurance:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Endurance:</span>
                   <RatingButtons
                     value={skillsForm.endurance}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, endurance: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Endurance: {evaluation.endurance}{evaluation.endurance != null ? ` (${ratingLabel(evaluation.endurance)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Strength:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Strength:</span>
                   <RatingButtons
                     value={skillsForm.strength}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, strength: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Strength: {evaluation.strength}{evaluation.strength != null ? ` (${ratingLabel(evaluation.strength)})` : ""}</>
               )}
@@ -510,52 +570,56 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Understanding</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Positioning:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Positioning:</span>
                   <RatingButtons
                     value={skillsForm.positioning}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, positioning: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Positioning: {evaluation.positioning}{evaluation.positioning != null ? ` (${ratingLabel(evaluation.positioning)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Decision making:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Decision making:</span>
                   <RatingButtons
                     value={skillsForm.decision_making}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, decision_making: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Decision making: {evaluation.decision_making}{evaluation.decision_making != null ? ` (${ratingLabel(evaluation.decision_making)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Game awareness:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Game awareness:</span>
                   <RatingButtons
                     value={skillsForm.game_awareness}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, game_awareness: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Game awareness: {evaluation.game_awareness}{evaluation.game_awareness != null ? ` (${ratingLabel(evaluation.game_awareness)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Teamwork:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Teamwork:</span>
                   <RatingButtons
                     value={skillsForm.teamwork}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, teamwork: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Teamwork: {evaluation.teamwork}{evaluation.teamwork != null ? ` (${ratingLabel(evaluation.teamwork)})` : ""}</>
               )}
@@ -565,52 +629,56 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Psychological and Social</li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Respect:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Respect:</span>
                   <RatingButtons
                     value={skillsForm.respect}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, respect: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Respect: {evaluation.respect}{evaluation.respect != null ? ` (${ratingLabel(evaluation.respect)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Sportsmanship:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Sportsmanship:</span>
                   <RatingButtons
                     value={skillsForm.sportsmanship}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, sportsmanship: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Sportsmanship: {evaluation.sportsmanship}{evaluation.sportsmanship != null ? ` (${ratingLabel(evaluation.sportsmanship)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Confidence:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Confidence:</span>
                   <RatingButtons
                     value={skillsForm.confidence}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, confidence: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Confidence: {evaluation.confidence}{evaluation.confidence != null ? ` (${ratingLabel(evaluation.confidence)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Leadership:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Leadership:</span>
                   <RatingButtons
                     value={skillsForm.leadership}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, leadership: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Leadership: {evaluation.leadership}{evaluation.leadership != null ? ` (${ratingLabel(evaluation.leadership)})` : ""}</>
               )}
@@ -656,13 +724,14 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             </li>
             <li className="col-span-2">
               {editingSkills ? (
-                <label className="text-sm inline-flex items-center gap-2">
-                  <span>Attendance and punctuality:</span>
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Attendance and punctuality:</span>
                   <RatingButtons
                     value={skillsForm.attendance_and_punctuality}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
+                    className="flex-1 justify-between"
                   />
-                </label>
+                </div>
               ) : (
                 <>Attendance and punctuality: {evaluation.attendance_and_punctuality}{evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}</>
               )}
@@ -738,13 +807,14 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["using_both_feet", "Using both feet"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm inline-flex items-center gap-2">
-                      <span>{label}:</span>
+                    <div key={key} className="text-sm flex items-center gap-2 w-full">
+                      <span className="shrink-0 w-44">{label}:</span>
                       <RatingButtons
                         value={(createForm as any)[key]}
                         onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                        className="flex-1 justify-between"
                       />
-                    </label>
+                    </div>
                   ))}
                   <SectionHeader title="Physical Abilities" />
                   {(
@@ -755,13 +825,14 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["strength", "Strength"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm inline-flex items-center gap-2">
-                      <span>{label}:</span>
+                    <div key={key} className="text-sm flex items-center gap-2 w-full">
+                      <span className="shrink-0 w-44">{label}:</span>
                       <RatingButtons
                         value={(createForm as any)[key]}
                         onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                        className="flex-1 justify-between"
                       />
-                    </label>
+                    </div>
                   ))}
                   <SectionHeader title="Technical Understanding" />
                   {(
@@ -772,13 +843,14 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["teamwork", "Teamwork"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm inline-flex items-center gap-2">
-                      <span>{label}:</span>
+                    <div key={key} className="text-sm flex items-center gap-2 w-full">
+                      <span className="shrink-0 w-44">{label}:</span>
                       <RatingButtons
                         value={(createForm as any)[key]}
                         onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                        className="flex-1 justify-between"
                       />
-                    </label>
+                    </div>
                   ))}
                   <SectionHeader title="Psychological and Social" />
                   {(
@@ -789,22 +861,24 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       ["leadership", "Leadership"],
                     ] as const
                   ).map(([key, label]) => (
-                    <label key={key} className="text-sm inline-flex items-center gap-2">
-                      <span>{label}:</span>
+                    <div key={key} className="text-sm flex items-center gap-2 w-full">
+                      <span className="shrink-0 w-44">{label}:</span>
                       <RatingButtons
                         value={(createForm as any)[key]}
                         onChange={(n) => setCreateForm((prev) => ({ ...prev, [key]: n }))}
+                        className="flex-1 justify-between"
                       />
-                    </label>
+                    </div>
                   ))}
                   <div className="col-span-2">
-                    <label className="text-sm inline-flex items-center gap-2">
-                      <span>Attendance and punctuality:</span>
+                    <div className="text-sm flex items-center gap-2 w-full">
+                      <span className="shrink-0 w-44">Attendance and punctuality:</span>
                       <RatingButtons
                         value={createForm.attendance_and_punctuality}
                         onChange={(n) => setCreateForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
+                        className="flex-1 justify-between"
                       />
-                    </label>
+                    </div>
                   </div>
                 </div>
                 <textarea
@@ -852,17 +926,17 @@ function RatingButtons({
   className?: string;
 }) {
   const options = [1, 2, 3, 4, 5];
-  const current = typeof value === "number" ? value : 0;
+  const current = typeof value === "number" ? value : null;
   return (
-    <div className={`inline-flex gap-1 ${className ?? ""}`}>
+    <div className={`flex w-full gap-1 justify-between ${className ?? ""}`}>
       {options.map((n) => (
         <button
           key={n}
           type="button"
           className={`px-2 py-1 rounded text-sm transition-colors ${
             n === current
-              ? "bg-brand-red hover:bg-brand-maroon text-white border border-brand-red"
-              : "border border-gray-300 bg-white text-gray-800 hover:border-gray-400"
+              ? "bg-brand-red text-white border border-brand-red cursor-default"
+              : "border border-gray-300 bg-white text-gray-800 hover:border-gray-400 cursor-pointer"
           }`}
           aria-pressed={n === current}
           onClick={() => onChange(n)}
