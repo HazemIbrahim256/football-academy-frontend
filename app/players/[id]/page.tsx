@@ -440,20 +440,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
           <ul className="grid grid-cols-2 gap-2 text-sm mb-3">
             {/* Technical Skills (contextualized) */}
             <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical skills in relation to the football context (decision making)</li>
-            <li>
-              {editingSkills ? (
-                <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Ball receiving and post-reception action:</span>
-                  <RatingButtons
-                    value={skillsForm.ball_control}
-                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, ball_control: n }))}
-                    className="flex-1 justify-between"
-                  />
-                </div>
-              ) : (
-                <>Ball receiving and post-reception action: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
-              )}
-            </li>
+            {/* Reordered: Ball receiving directly after Passing */}
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
@@ -466,6 +453,20 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                 </div>
               ) : (
                 <>Passing: {evaluation.passing}{evaluation.passing != null ? ` (${ratingLabel(evaluation.passing)})` : ""}</>
+              )}
+            </li>
+            <li>
+              {editingSkills ? (
+                <div className="text-sm flex items-center gap-2 w-full">
+                  <span className="shrink-0 w-44">Ball receiving and post-reception action:</span>
+                  <RatingButtons
+                    value={skillsForm.ball_control}
+                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, ball_control: n }))}
+                    className="flex-1 justify-between"
+                  />
+                </div>
+              ) : (
+                <>Ball receiving and post-reception action: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
               )}
             </li>
             <li>
@@ -801,8 +802,8 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   <SectionHeader title="Technical skills in relation to the football context (decision making)" />
                   {(
                     [
-                      ["ball_control", "Ball receiving and post-reception action"],
                       ["passing", "Passing"],
+                      ["ball_control", "Ball receiving and post-reception action"],
                       ["dribbling", "Dribbling"],
                       ["shooting", "Shooting"],
                       ["using_both_feet", "Using both feet"],
