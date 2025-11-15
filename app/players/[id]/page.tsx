@@ -449,12 +449,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         </div>
         {evaluation ? (
           <ul className="grid grid-cols-2 gap-2 text-sm mb-3">
-            {/* Technical Skills */}
-            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Skills</li>
+            {/* Technical Skills (contextualized) */}
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical skills in relation to the football context (decision making)</li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Ball control:</span>
+                  <span className="shrink-0 w-44">Ball receiving and post-reception action:</span>
                   <RatingButtons
                     value={skillsForm.ball_control}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, ball_control: n }))}
@@ -462,7 +462,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Ball control: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
+                <>Ball receiving and post-reception action: {evaluation.ball_control}{evaluation.ball_control != null ? ` (${ratingLabel(evaluation.ball_control)})` : ""}</>
               )}
             </li>
             <li>
@@ -522,8 +522,8 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               )}
             </li>
 
-            {/* Physical Abilities */}
-            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Physical Abilities</li>
+            {/* Physical Abilities (contextualized) */}
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Physical abilities in relation to the football context</li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
@@ -581,12 +581,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               )}
             </li>
 
-            {/* Technical Understanding */}
-            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Technical Understanding</li>
+            {/* Tactical skills (awareness and decision making) */}
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Tactical skills should be in the context of (awareness and decision making)</li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Positioning:</span>
+                  <span className="shrink-0 w-44">Awareness of correct positioning:</span>
                   <RatingButtons
                     value={skillsForm.positioning}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, positioning: n }))}
@@ -594,13 +594,13 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Positioning: {evaluation.positioning}{evaluation.positioning != null ? ` (${ratingLabel(evaluation.positioning)})` : ""}</>
+                <>Awareness of correct positioning: {evaluation.positioning}{evaluation.positioning != null ? ` (${ratingLabel(evaluation.positioning)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Decision making:</span>
+                  <span className="shrink-0 w-44">make the right decisions during the game:</span>
                   <RatingButtons
                     value={skillsForm.decision_making}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, decision_making: n }))}
@@ -608,13 +608,13 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Decision making: {evaluation.decision_making}{evaluation.decision_making != null ? ` (${ratingLabel(evaluation.decision_making)})` : ""}</>
+                <>make the right decisions during the game: {evaluation.decision_making}{evaluation.decision_making != null ? ` (${ratingLabel(evaluation.decision_making)})` : ""}</>
               )}
             </li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Game awareness:</span>
+                  <span className="shrink-0 w-44">Awareness of opponents and teammates:</span>
                   <RatingButtons
                     value={skillsForm.game_awareness}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, game_awareness: n }))}
@@ -622,7 +622,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Game awareness: {evaluation.game_awareness}{evaluation.game_awareness != null ? ` (${ratingLabel(evaluation.game_awareness)})` : ""}</>
+                <>Awareness of opponents and teammates: {evaluation.game_awareness}{evaluation.game_awareness != null ? ` (${ratingLabel(evaluation.game_awareness)})` : ""}</>
               )}
             </li>
             <li>
@@ -640,8 +640,8 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               )}
             </li>
 
-            {/* Psychological and Social */}
-            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Psychological and Social</li>
+            {/* Psychological and mental (life skills context) */}
+            <li className="col-span-2 font-medium mt-2 rounded px-2 py-1 bg-yellow-200 text-gray-900 ring-2 ring-yellow-300">Psychological and mental aspects should be in the context of life skills</li>
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
@@ -673,7 +673,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
             <li>
               {editingSkills ? (
                 <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Confidence:</span>
+                  <span className="shrink-0 w-44">Self-confidence:</span>
                   <RatingButtons
                     value={skillsForm.confidence}
                     onChange={(n) => setSkillsForm((prev) => ({ ...prev, confidence: n }))}
@@ -681,7 +681,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                   />
                 </div>
               ) : (
-                <>Confidence: {evaluation.confidence}{evaluation.confidence != null ? ` (${ratingLabel(evaluation.confidence)})` : ""}</>
+                <>Self-confidence: {evaluation.confidence}{evaluation.confidence != null ? ` (${ratingLabel(evaluation.confidence)})` : ""}</>
               )}
             </li>
             <li>
@@ -738,27 +738,63 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               </div>
             </li>
             <li className="col-span-2">
-              {editingSkills ? (
-                <div className="text-sm flex items-center gap-2 w-full">
-                  <span className="shrink-0 w-44">Attendance and punctuality:</span>
-                  <RatingButtons
-                    value={skillsForm.attendance_and_punctuality}
-                    onChange={(n) => setSkillsForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
-                    className="flex-1 justify-between"
-                  />
-                </div>
-              ) : (
-                <>
-                  Attendance and punctuality: {evaluation.attendance_and_punctuality}
-                  {evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}
-                  {" "}
-                  <span className="ml-2 text-xs text-gray-600">
-                    Monthly attendance: {(player?.attendance_days ?? 0)}/8 ({Math.round((((player?.attendance_days ?? 0) / 8) * 100))}%)
-                  </span>
-                </>
-              )}
+              {/* Edit UI removed: attendance and punctuality now derives from attendance inputs */}
+              <>
+                Attendance and punctuality: {evaluation.attendance_and_punctuality}
+                {evaluation.attendance_and_punctuality != null ? ` (${ratingLabel(evaluation.attendance_and_punctuality)})` : ""}
+                {" "}
+                <span className="ml-2 text-xs text-gray-600">
+                  Monthly attendance: {(player?.attendance_days ?? 0)}/8 ({Math.round((((player?.attendance_days ?? 0) / 8) * 100))}%)
+                </span>
+              </>
             </li>
-            {/* Notes section removed per user request */}
+            <li className="col-span-2">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <span className="font-medium">Notes:</span>
+                  {editingNotes ? (
+                    <textarea
+                      className="mt-1 border px-2 py-1 rounded w-full text-sm"
+                      placeholder="Notes (optional)"
+                      value={notesInput}
+                      onChange={(e) => setNotesInput(e.target.value)}
+                    />
+                  ) : (
+                    <span className="ml-1 text-sm">{evaluation.notes || "—"}</span>
+                  )}
+                </div>
+                <div className="shrink-0 flex gap-2">
+                  {editingNotes ? (
+                    <>
+                      <button
+                        type="button"
+                        className="rounded bg-brand-red hover:bg-brand-maroon text-white px-3 py-1 text-sm"
+                        onClick={saveNotes}
+                        disabled={savingNotes}
+                      >
+                        {savingNotes ? "Saving…" : "Save"}
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded border px-3 py-1 text-sm"
+                        onClick={cancelEditNotes}
+                        disabled={savingNotes}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="rounded border px-3 py-1 text-sm"
+                      onClick={startEditNotes}
+                    >
+                      {evaluation.notes ? "Edit Notes" : "Add Notes"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </li>
           </ul>
         ) : (
           <div className="mb-3">
@@ -773,10 +809,10 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
               <div className="space-y-2">
                 {/* Create evaluation form: categories */}
                 <div className="grid grid-cols-2 gap-2">
-                  <SectionHeader title="Technical Skills" />
+                  <SectionHeader title="Technical skills in relation to the football context (decision making)" />
                   {(
                     [
-                      ["ball_control", "Ball control"],
+                      ["ball_control", "Ball receiving and post-reception action"],
                       ["passing", "Passing"],
                       ["dribbling", "Dribbling"],
                       ["shooting", "Shooting"],
@@ -792,7 +828,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </div>
                   ))}
-                  <SectionHeader title="Physical Abilities" />
+                  <SectionHeader title="Physical abilities in relation to the football context" />
                   {(
                     [
                       ["speed", "Speed"],
@@ -810,12 +846,12 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </div>
                   ))}
-                  <SectionHeader title="Technical Understanding" />
+                  <SectionHeader title="Tactical skills should be in the context of (awareness and decision making)" />
                   {(
                     [
-                      ["positioning", "Positioning"],
-                      ["decision_making", "Decision making"],
-                      ["game_awareness", "Game awareness"],
+                      ["positioning", "Awareness of correct positioning"],
+                      ["decision_making", "make the right decisions during the game"],
+                      ["game_awareness", "Awareness of opponents and teammates"],
                       ["teamwork", "Teamwork"],
                     ] as const
                   ).map(([key, label]) => (
@@ -828,7 +864,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </div>
                   ))}
-                  <SectionHeader title="Psychological and Social" />
+                  <SectionHeader title="Psychological and mental aspects should be in the context of life skills" />
                   {(
                     [
                       ["respect", "Respect"],
