@@ -81,8 +81,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     sportsmanship: number | null;
     confidence: number | null;
     leadership: number | null;
-    // Overall
-    attendance_and_punctuality: number | null;
+    // Overall (attendance is auto-calculated; no manual input)
   }>({
     // Technical Skills
     ball_control: null,
@@ -105,8 +104,7 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     sportsmanship: null,
     confidence: null,
     leadership: null,
-    // Overall
-    attendance_and_punctuality: null,
+    // Overall (attendance is auto-calculated; no manual input)
   });
   const [savingSkills, setSavingSkills] = useState(false);
   // Creation form state (for players with no evaluation yet)
@@ -134,8 +132,6 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     sportsmanship: number | null;
     confidence: number | null;
     leadership: number | null;
-    // Overall
-    attendance_and_punctuality: number | null;
     notes: string;
   }>({
     // Technical Skills
@@ -159,8 +155,6 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
     sportsmanship: null,
     confidence: null,
     leadership: null,
-    // Overall
-    attendance_and_punctuality: null,
     notes: "",
   });
 
@@ -298,8 +292,6 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         sportsmanship: clampOrNull(createForm.sportsmanship),
         confidence: clampOrNull(createForm.confidence),
         leadership: clampOrNull(createForm.leadership),
-        // Overall
-        attendance_and_punctuality: clampOrNull(createForm.attendance_and_punctuality),
         notes: (createForm.notes || "").trim(),
       };
       const saved = await api<Evaluation>(`/api/evaluations/`, {
@@ -335,7 +327,6 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
       sportsmanship: evaluation.sportsmanship ?? null,
       confidence: evaluation.confidence ?? null,
       leadership: evaluation.leadership ?? null,
-      attendance_and_punctuality: evaluation.attendance_and_punctuality ?? null,
     });
     setEditingSkills(true);
   };
@@ -369,13 +360,11 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
         // Psychological and Social
         respect: clampOrNull(skillsForm.respect),
         sportsmanship: clampOrNull(skillsForm.sportsmanship),
-        confidence: clampOrNull(skillsForm.confidence),
-        leadership: clampOrNull(skillsForm.leadership),
-        // Overall
-        attendance_and_punctuality: clampOrNull(skillsForm.attendance_and_punctuality),
-        // Notes preserved as-is
-        notes: (evaluation.notes || "").trim(),
-      };
+      confidence: clampOrNull(skillsForm.confidence),
+      leadership: clampOrNull(skillsForm.leadership),
+      // Notes preserved as-is
+      notes: (evaluation.notes || "").trim(),
+    };
       const saved = await api<Evaluation>(`/api/evaluations/${evaluation.id}/`, {
         method: "PATCH",
         body: JSON.stringify(payload),
@@ -882,15 +871,11 @@ export default function PlayerPage({ params }: { params: { id: string } }) {
                       />
                     </div>
                   ))}
-                  <div className="col-span-2">
-                    <div className="text-sm flex items-center gap-2 w-full">
-                      <span className="shrink-0 w-44">Attendance and punctuality:</span>
-                      <RatingButtons
-                        value={createForm.attendance_and_punctuality}
-                        onChange={(n) => setCreateForm((prev) => ({ ...prev, attendance_and_punctuality: n }))}
-                        className="flex-1 justify-between"
-                      />
-                    </div>
+                  <div className="col-span-2 text-sm">
+                    <span className="shrink-0 w-44 inline-block">Attendance and punctuality:</span>
+                    <span className="ml-2">
+                      Auto-calculated from monthly attendance ({(player?.attendance_days ?? 0)}/8 days).
+                    </span>
                   </div>
                 </div>
                 <textarea
@@ -940,7 +925,7 @@ function RatingButtons({
   const options = [1, 2, 3, 4, 5];
   const current = typeof value === "number" ? value : null;
   return (
-    <div className={`flex w-full gap-1 justify-between ${className ?? ""}`}>
+    <>
       {options.map((n) => (
         <button
           key={n}
@@ -956,7 +941,7 @@ function RatingButtons({
           {n}
         </button>
       ))}
-    </div>
+    </>
   );
 }
 
